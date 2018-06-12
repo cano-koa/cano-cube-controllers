@@ -43,7 +43,8 @@ class ControllersCube extends Cube {
         return new Promise((resolve) => {
             const requiredControllers = requireAll(this.controllerPath)
             map(requiredControllers, (Controller, fileName) => {
-                const controller = new Controller();
+                const controller = typeof Controller === 'function' ? new Controller() : new Controller.default();
+                global[fileName] = controller;
                 this.bindToApp('controllers', fileName, controller)
             })
             resolve()
